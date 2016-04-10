@@ -23,7 +23,7 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
     var data = req.body;
     switch(event){
       case 'push':
-      var message = `Wai~! ${data.pusher.name} just pushed ${data.commits.length} commit(s) to ${data.repository.name} ( ${data.repository.html_url} )!`;
+      var message = `Wai~! ${data.pusher.name} just pushed ${data.commits.length} commit${data.commits.length > 1 ? s : ''} to ${data.repository.name} ( ${data.repository.html_url} )!`;
       message += '\n\n```';
       for (var i = 0; i < data.commits.length; i++) {
         message += `\n\n${data.commits[i].author.name}\n${data.commits[i].id}\n${data.commits[i].message}`;
