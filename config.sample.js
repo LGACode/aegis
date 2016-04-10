@@ -7,5 +7,8 @@ module.exports = {
   },
   github: {
     secret: 'githubsecret'
+  },
+  yuki: {
+    secret: 'yukisecret'
   }
 }
