@@ -4,14 +4,20 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var mybot = new Discord.Client();
+var aegis = new Discord.Client();
 
-mybot.on('message', function(message){
-    if(message.content === 'smug')
-        mybot.reply(message, 'snug smug');
+aegis.on('message', function(message){
+  if(message.content === 'smug')
+    aegis.reply(message, 'snug smug');
 });
 
-mybot.login(config.discord.email, config.discord.password).then(function(){
+aegis.on("ready", function () {
+  console.log(aegis.channels.get("name", "general"));
+  console.log("Ready to begin! Serving in " + aegis.channels.length + " channels");
+});
+
+aegis.login(config.discord.email, config.discord.password).then(function(){
+  console.log(aegis.channels.getAll("name", "general"));
   app.use(bodyParser.json());
 
   app.post('/github/webhook', function (req, res) {
@@ -27,7 +33,7 @@ mybot.login(config.discord.email, config.discord.password).then(function(){
         message += `\n${data.commits[i].author.name} - ${data.commits[i].id} - ${data.commits[i].message} - ${data.commits[i].url}`;
       }
       message += '\n```';
-      mybot.sendMessage('general', message);
+      aegis.sendMessage(aegis.channels.get("name", "general"), message);
       break;
     }
 
