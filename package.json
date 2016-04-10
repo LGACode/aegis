@@ -2,7 +2,7 @@
   "name": "aegis",
   "version": "0.0.1",
   "description": "Bot for Dischan's Discord server.",
-  "main": "index.js",
+  "main": "aegis.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node aegis.js"
