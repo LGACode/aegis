@@ -23,7 +23,7 @@ aegis.on("ready", function () {
   console.log("Ready to begin! Serving in " + aegis.channels.length + " channels");
   fs.stat(`${__dirname}/update.flag`, function(err, stat) {
     if(err === null) {
-      message = `Tadaima~! (✿╹◡╹) I'm back and running version ${version} of my code!`;
+      var message = `Tadaima~! (✿╹◡╹) I'm back and running version ${version} of my code!`;
       aegis.sendMessage(aegis.channels.get("name", "general"), message);
       fs.unlinkSync(`${__dirname}/update.flag`);
     }
