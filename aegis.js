@@ -59,17 +59,20 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
                   //kill bot
                   console.log('killing yuki');
                   proc.execSync('kill -9 $(ps aux | grep \'[y]uki.js\' | awk \'{print $2}\')');
-                } finally {
+                } catch(err) {}
+                try {
                   //pull updates
                   console.log('pulling updates');
                   proc.execSync('git pull', {cwd: `${__dirname}/../yuki`});
+                } catch(err) {}
+                try {
                   //start bot
                   console.log('restarting bot');
                   proc.execSync('node yuki.js > stdout.txt 2> stderr.txt &', {cwd: `${__dirname}/../yuki`});
+                } catch(err) {}
 
-                  message = `I updated and restarted her, she's probably fine... (✿ •́ ‸ •̀ )`;
-                  aegis.sendMessage(aegis.channels.get("name", "general"), message);
-                }
+                message = `I updated and restarted her, she's probably fine... (✿ •́ ‸ •̀ )`;
+                aegis.sendMessage(aegis.channels.get("name", "general"), message);
               });
             }
           });
