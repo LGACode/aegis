@@ -55,7 +55,7 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
           message += '\n```';
           aegis.sendMessage(getDischanGeneral(), message, function(){
             if(data.repository.name==='yuki'){
-              message = `Since ${data.commits.length > 1 ? 'these' : 'this'} update is for Yuki, I'm going to try to update her myself...`;
+              message = `Since ${data.commits.length > 1 ? 'these' : 'this'} update${data.commits.length > 1 ? 's' : ''} ${data.commits.length > 1 ? 'are' : 'is'} for Yuki, I'm going to try to update her myself...`;
               aegis.sendMessage(getDischanGeneral(), message, function(){
                 fs.writeFileSync(`${__dirname}/../yuki/update.flag`, 'updating');
                 //update yuki
