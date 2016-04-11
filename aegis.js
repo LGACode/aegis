@@ -15,6 +15,10 @@ function verifySignature(key, data, signature) {
   return sig === signature;
 }
 
+function getDischanGeneral() {
+  return aegis.servers.get('id', '166292276832763905').channels.get('name', 'general');
+}
+
 aegis.on('message', function(message){
   if(message.content === 'smug')
     aegis.reply(message, 'snug smug');
@@ -25,7 +29,7 @@ aegis.on("ready", function () {
   fs.stat(`${__dirname}/update.flag`, function(err, stat) {
     if(err === null) {
       var message = `Tadaima~! (✿╹◡╹) I'm back and running version ${version} of my code!`;
-      aegis.sendMessage(aegis.channels.get("name", "general"), message);
+      aegis.sendMessage(getDischanGeneral(), message);
       fs.unlinkSync(`${__dirname}/update.flag`);
     }
   });
@@ -49,30 +53,24 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
             message += `\n\n${data.commits[i].author.name}\n${data.commits[i].id}\n${data.commits[i].message}`;
           }
           message += '\n```';
-          aegis.sendMessage(aegis.channels.get("name", "general"), message, function(){
+          aegis.sendMessage(getDischanGeneral(), message, function(){
             if(data.repository.name==='yuki'){
               message = `Since ${data.commits.length > 1 ? 'these' : 'this'} update is for Yuki, I'm going to try to update her myself...`;
-              aegis.sendMessage(aegis.channels.get("name", "general"), message, function(){
+              aegis.sendMessage(getDischanGeneral(), message, function(){
                 fs.writeFileSync(`${__dirname}/../yuki/update.flag`, 'updating');
                 //update yuki
                 try {
-                  //kill bot
-                  console.log('killing yuki');
                   proc.execSync('kill -9 $(ps aux | grep \'[y]uki.js\' | awk \'{print $2}\')');
                 } catch(err) {}
                 try {
-                  //pull updates
-                  console.log('pulling updates');
                   proc.execSync('git pull', {cwd: `${__dirname}/../yuki`});
                 } catch(err) {}
                 try {
-                  //start bot
-                  console.log('restarting bot');
                   proc.execSync('node yuki.js > stdout.txt 2> stderr.txt &', {cwd: `${__dirname}/../yuki`});
                 } catch(err) {}
 
                 message = `I updated and restarted her, she's probably fine... (✿ •́ ‸ •̀ )`;
-                aegis.sendMessage(aegis.channels.get("name", "general"), message);
+                aegis.sendMessage(getDischanGeneral(), message);
               });
             }
           });
@@ -96,7 +94,7 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
       }
       message += '\n```';
 
-      aegis.sendMessage(aegis.channels.get("name", "general"), message, function(){
+      aegis.sendMessage(getDischanGeneral(), message, function(){
         //wait a bit for message to send
         setTimeout(function() {
           fs.writeFileSync(`${__dirname}/update.flag`, 'updating');
@@ -114,7 +112,7 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
       var data = req.body;
       var message = `She just called, and she's totally fine! Yatta! ٩(✿˃̵ᴗ˂̵)و`;
 
-      aegis.sendMessage(aegis.channels.get("name", "general"), message);
+      aegis.sendMessage(getDischanGeneral(), message);
     }
   });
 
