@@ -1,0 +1,2 @@
+Aegis is listening on port 8008
+Ready to begin! Serving in 2 channels

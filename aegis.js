@@ -69,9 +69,8 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
       }
       message += '\n```';
 
-      fs.writeFileSync(`${__dirname}/update.flag`);
-
-      aegis.sendMessage(aegis.channels.get("name", "general"), message, null, function(){
+      aegis.sendMessage(aegis.channels.get("name", "general"), message, function(){
+        fs.writeFileSync(`${__dirname}/update.flag`, 'updating');
         res.send('Success');
       });
     }
