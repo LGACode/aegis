@@ -70,8 +70,11 @@ aegis.login(config.discord.email, config.discord.password).then(function(){
       message += '\n```';
 
       aegis.sendMessage(aegis.channels.get("name", "general"), message, function(){
-        fs.writeFileSync(`${__dirname}/update.flag`, 'updating');
-        res.send('Success');
+        //wait a bit for message to send
+        setTimeout(function() {
+          fs.writeFileSync(`${__dirname}/update.flag`, 'updating');
+          res.send('Success');
+        }, 2000);
       });
     }
   });
