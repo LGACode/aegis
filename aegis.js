@@ -19,9 +19,23 @@ function getDischanGeneral() {
   return aegis.servers.get('id', '166292276832763905').channels.get('name', 'general');
 }
 
+function reconnect() {
+  aegis.login(config.discord.email, config.discord.password, function(error){
+    //if we have an error, try again in 30 seconds
+    if(error){
+      setTimeout(reconnect, 30000);
+    }
+  });
+}
+
 aegis.on('message', function(message){
   if(message.content === 'smug')
     aegis.reply(message, 'snug smug');
+});
+
+aegis.on('disconnected', function() {
+  //try to reconnect
+  reconnect();
 });
 
 aegis.on("ready", function () {
@@ -35,7 +49,7 @@ aegis.on("ready", function () {
   });
 });
 
-aegis.login(config.discord.email, config.discord.password).then(function(){
+aegis.login(config.discord.email, config.discord.password, function(){
   app.use(bodyParser.json());
 
   app.post('/github/webhook', function (req, res) {
