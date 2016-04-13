@@ -72,19 +72,27 @@ aegis.login(config.discord.email, config.discord.password, function(){
               message = `Since ${data.commits.length > 1 ? 'these' : 'this'} update${data.commits.length > 1 ? 's' : ''} ${data.commits.length > 1 ? 'are' : 'is'} for Yuki, I'm going to try to update her myself...`;
               aegis.sendMessage(getDischanGeneral(), message, function(){
                 fs.writeFileSync(`${__dirname}/../yuki/update.flag`, 'updating');
-                //update yuki
-                try {
-                  proc.execSync('kill -9 $(ps aux | grep \'[y]uki.js\' | awk \'{print $2}\')');
-                } catch(err) {}
-                try {
-                  proc.execSync('git pull', {cwd: `${__dirname}/../yuki`});
-                } catch(err) {}
-                try {
-                  proc.execSync('node yuki.js > stdout.txt 2> stderr.txt &', {cwd: `${__dirname}/../yuki`});
-                } catch(err) {}
 
-                message = `I updated and restarted her, she's probably fine... (✿ •́ ‸ •̀ )`;
-                aegis.sendMessage(getDischanGeneral(), message);
+                var stdoutStream = fs.createWriteStream(`${__dirname}/../yuki/stdout.txt`);
+                stdoutStream.on('open', function () {
+                  var stderrStream = fs.createWriteStream(`${__dirname}/../yuki/stderr.txt`);
+                  stderrStream.on('open', function () {
+                    //update yuki
+                    try {
+                      proc.execSync('kill -9 $(ps aux | grep \'[y]uki.js\' | awk \'{print $2}\')');
+                    } catch(err) {}
+                    try {
+                      proc.execSync('git pull', {cwd: `${__dirname}/../yuki`});
+                    } catch(err) {}
+                    try {
+                      var child = proc.spawn('node', ['yuki.js'], {cwd: `${__dirname}/../yuki`, detached: true, stdio: [ stdoutStream, stderrStream, 'ignore' ]});
+                      child.unref();
+                    } catch(err) {}
+
+                    message = `I updated and restarted her, she's probably fine... (✿ •́ ‸ •̀ )`;
+                    aegis.sendMessage(getDischanGeneral(), message);
+                  });
+                });
               });
             }
           });
