@@ -15,8 +15,8 @@ function verifySignature(key, data, signature) {
   return sig === signature;
 }
 
-function getDischanNotices() {
-  return aegis.servers.get('id', '166292276832763905').channels.get('name', 'notices');
+function getDischanBuilds() {
+  return aegis.servers.get('id', '166292276832763905').channels.get('name', 'builds');
 }
 
 function reconnect() {
@@ -43,7 +43,7 @@ aegis.on("ready", function () {
   fs.stat(`${__dirname}/update.flag`, function(err, stat) {
     if(err === null) {
       var message = `Tadaima~! (✿╹◡╹) I'm back and running version ${version} of my code!`;
-      aegis.sendMessage(getDischanNotices(), message);
+      aegis.sendMessage(getDischanBuilds(), message);
       fs.unlinkSync(`${__dirname}/update.flag`);
     }
   });
@@ -67,10 +67,10 @@ aegis.login(config.discord.email, config.discord.password, function(){
             message += `\n\n${data.commits[i].author.name}\n${data.commits[i].id}\n${data.commits[i].message}`;
           }
           message += '\n```';
-          aegis.sendMessage(getDischanNotices(), message, function(){
+          aegis.sendMessage(getDischanBuilds(), message, function(){
             if(data.repository.name==='yuki'){
               message = `Since ${data.commits.length > 1 ? 'these' : 'this'} update${data.commits.length > 1 ? 's' : ''} ${data.commits.length > 1 ? 'are' : 'is'} for Yuki, I'm going to try to update her myself...`;
-              aegis.sendMessage(getDischanNotices(), message, function(){
+              aegis.sendMessage(getDischanBuilds(), message, function(){
                 fs.writeFileSync(`${__dirname}/../yuki/update.flag`, 'updating');
 
                 var stdoutStream = fs.createWriteStream(`${__dirname}/../yuki/stdout.txt`);
@@ -90,7 +90,7 @@ aegis.login(config.discord.email, config.discord.password, function(){
                     } catch(err) {}
 
                     message = `I updated and restarted her, she's probably fine... (✿ •́ ‸ •̀ )`;
-                    aegis.sendMessage(getDischanNotices(), message);
+                    aegis.sendMessage(getDischanBuilds(), message);
                   });
                 });
               });
@@ -116,7 +116,7 @@ aegis.login(config.discord.email, config.discord.password, function(){
       }
       message += '\n```';
 
-      aegis.sendMessage(getDischanNotices(), message, function(){
+      aegis.sendMessage(getDischanBuilds(), message, function(){
         //wait a bit for message to send
         setTimeout(function() {
           fs.writeFileSync(`${__dirname}/update.flag`, 'updating');
@@ -134,7 +134,7 @@ aegis.login(config.discord.email, config.discord.password, function(){
       var data = req.body;
       var message = `She just called, and she's totally fine! Yatta! ٩(✿ ˃̵ ᴗ ˂̵)و`;
 
-      aegis.sendMessage(getDischanNotices(), message);
+      aegis.sendMessage(getDischanBuilds(), message);
     }
   });
 
