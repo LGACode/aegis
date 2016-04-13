@@ -82,7 +82,7 @@ aegis.login(config.discord.email, config.discord.password, function(){
                       proc.execSync('kill -9 $(ps aux | grep \'[y]uki.js\' | awk \'{print $2}\')');
                     } catch(err) {}
                     try {
-                      proc.execSync('git pull', {cwd: `${__dirname}/../yuki`});
+                      proc.execSync('git pull --progress', {cwd: `${__dirname}/../yuki`});
                     } catch(err) {}
                     try {
                       var child = proc.spawn('node', ['yuki.js'], {cwd: `${__dirname}/../yuki`, detached: true, stdio: [ stdoutStream, stderrStream, 'ignore' ]});
