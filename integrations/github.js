@@ -16,7 +16,7 @@ function webhook(req, res) {
         var message = `Wai~! ${data.pusher.name} just pushed ${data.commits.length} commit${data.commits.length > 1 ? 's' : ''} to ${data.repository.name} ( ${data.repository.html_url} )!`;
         message += '\n\n```';
         for (var i = 0; i < data.commits.length; i++) {
-          message += `\n\n${data.commits[i].author.name}\n${data.commits[i].id}\n${data.commits[i].message}`;
+          message += `\n\n${data.commits[i].author.name} - ${data.commits[i].id}\n${data.commits[i].message}`;
         }
         message += '\n```';
         req.aegis.sendMessage(req.getDischanBuilds(), message, function(){
