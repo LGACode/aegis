@@ -23,21 +23,21 @@ function webhook(req, res) {
           if(data.repository.name==='yuki'){
             message = `Since ${data.commits.length > 1 ? 'these' : 'this'} update${data.commits.length > 1 ? 's' : ''} ${data.commits.length > 1 ? 'are' : 'is'} for Yuki, I'm going to try to update her myself...`;
             req.aegis.sendMessage(req.getDischanBuilds(), message, function(){
-              fs.writeFileSync(`${__dirname}/../yuki/update.flag`, 'updating');
+              fs.writeFileSync(`${__dirname}/../../yuki/update.flag`, 'updating');
 
-              var stdoutStream = fs.createWriteStream(`${__dirname}/../yuki/stdout.txt`);
+              var stdoutStream = fs.createWriteStream(`${__dirname}/../../yuki/stdout.txt`);
               stdoutStream.on('open', function () {
-                var stderrStream = fs.createWriteStream(`${__dirname}/../yuki/stderr.txt`);
+                var stderrStream = fs.createWriteStream(`${__dirname}/../../yuki/stderr.txt`);
                 stderrStream.on('open', function () {
                   //update yuki
                   try {
                     proc.execSync('kill -9 $(ps aux | grep \'[y]uki.js\' | awk \'{print $2}\')');
                   } catch(err) {}
                   try {
-                    proc.execSync('git pull --progress', {cwd: `${__dirname}/../yuki`});
+                    proc.execSync('git pull --progress', {cwd: `${__dirname}/../../yuki`});
                   } catch(err) {}
                   try {
-                    var child = proc.spawn('node', ['yuki.js'], {cwd: `${__dirname}/../yuki`, detached: true, stdio: [ stdoutStream, stderrStream, 'ignore' ]});
+                    var child = proc.spawn('node', ['yuki.js'], {cwd: `${__dirname}/../../yuki`, detached: true, stdio: [ stdoutStream, stderrStream, 'ignore' ]});
                     child.unref();
                   } catch(err) {}
 

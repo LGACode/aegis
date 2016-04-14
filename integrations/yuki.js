@@ -19,7 +19,7 @@ function update (req, res) {
     req.aegis.sendMessage(req.getDischanBuilds(), message, function(){
       //wait a bit for message to send
       setTimeout(function() {
-        fs.writeFileSync(`${__dirname}/update.flag`, 'updating');
+        fs.writeFileSync(`${__dirname}/../update.flag`, 'updating');
         res.send('Success');
       }, 2000);
     });
